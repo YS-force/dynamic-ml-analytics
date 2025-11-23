@@ -79,18 +79,20 @@ It dynamically loads any CSV dataset, provides an editable grid interface, and p
 # 📸 Screenshots
 
 ### Dashboard
-![Dashboard Screenshot](YOUR_IMAGE_HERE)
+![Dashboard Screenshot](<img width="1897" height="905" alt="image" src="https://github.com/user-attachments/assets/35e84866-3f50-4c18-8213-e711003a5ba0" />
+)
 
 ### Editable Grid
-![Editable Grid](YOUR_IMAGE_HERE)
+![Editable Grid](<img width="1293" height="823" alt="image" src="https://github.com/user-attachments/assets/82640d3c-ac75-4802-9007-2756b7b0e879" />
+)
 
 ### Prediction Panel
-![Prediction Panel](YOUR_IMAGE_HERE)
+![Prediction Panel](<img width="250" height="652" alt="image" src="https://github.com/user-attachments/assets/3cc9057b-7ad9-4bf4-b82b-91aa0f676c89" />
+)
 
 ### Model Metrics
-![Model Metrics](YOUR_IMAGE_HERE)
-
-> Replace `YOUR_IMAGE_HERE` with uploaded screenshot URLs.
+![Model Metrics](<img width="245" height="333" alt="image" src="https://github.com/user-attachments/assets/d9113d36-4374-4534-90bc-5e6979d491aa" />
+)
 
 ---
 
@@ -214,7 +216,5 @@ This project delivers a **complete full-stack machine learning interface**, incl
 ---
 
 # ✨ Author  
-**Your Name (YS-force)**  
-Built as part of internship assessment.
-
+**YUVASHREE R**  
 
