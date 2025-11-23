@@ -1,0 +1,210 @@
+/* ───────────────────────────────
+   WRAPPER
+─────────────────────────────── */
+.grid-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+/* ───────────────────────────────
+   ADD RECORD SECTION (with scroll)
+─────────────────────────────── */
+.grid-add-wrapper {
+  border: 1px solid #e5e7eb;
+  background: #f9fafb;
+  border-radius: 8px;
+  padding: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-height: 260px; /* total visible height of add-card */
+}
+
+/* Scroll only the fields */
+.grid-add-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  overflow-y: auto;
+  max-height: 160px; /* scroll area only */
+  padding-right: 6px;
+}
+
+.grid-add-field {
+  display: flex;
+  flex-direction: column;
+  min-width: 130px;
+  padding-right: 10px;
+}
+
+.grid-add-field label {
+  font-size: 0.75rem;
+  margin-bottom: 0.25rem;
+  color: #374151;
+}
+
+.grid-add-field input {
+  padding: 0.35rem 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 0.8rem;
+}
+
+.grid-add-field input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.15);
+}
+
+/* Add button always visible */
+.grid-add-button {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 0.4rem;
+  border-top: 1px solid #e5e7eb;
+  background: #f9fafb;
+  position: sticky;
+  bottom: 0;
+}
+
+/* ───────────────────────────────
+   BULK DELETE
+─────────────────────────────── */
+.grid-bulk-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* ───────────────────────────────
+   TABLE CONTAINER
+─────────────────────────────── */
+.grid-table-container {
+  max-height: 680px;
+  overflow-y: auto;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+}
+
+/* ───────────────────────────────
+   TABLE
+─────────────────────────────── */
+.grid-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.grid-table thead {
+  background: #f3f4f6;
+  position: sticky;
+  top: 0;
+  z-index: 15;
+}
+
+.grid-table th,
+.grid-table td {
+  padding: 0.55rem 0.75rem;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: left;
+}
+
+.grid-table tbody tr:nth-child(even) {
+  background: #fafafa;
+}
+
+.grid-table tbody tr:hover {
+  background: #f1f5f9;
+}
+
+/* ───────────────────────────────
+   TABLE INPUT FIELDS
+─────────────────────────────── */
+.grid-table input {
+  width: 100%;
+  padding: 0.35rem 0.4rem;
+  border-radius: 4px;
+  border: 1px solid #d1d5db;
+  font-size: 0.8rem;
+}
+
+.grid-table input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.15);
+}
+
+/* ───────────────────────────────
+   BUTTONS
+─────────────────────────────── */
+.btn {
+  cursor: pointer;
+  border-radius: 4px;
+  padding: 0.3rem 0.5rem;
+  font-size: 0.75rem;
+  border: none;
+}
+
+.btn-xs {
+  padding: 0.25rem 0.45rem;
+}
+
+.btn-sm {
+  padding: 0.35rem 0.7rem;
+}
+
+.btn-primary {
+  background: #2563eb;
+  color: white;
+}
+
+.btn-danger {
+  background: #dc2626;
+  color: white;
+}
+
+.btn-ghost {
+  background: transparent;
+  border: 1px solid #d1d5db;
+  color: #374151;
+}
+
+.btn-ghost:hover {
+  background: #e5e7eb;
+}
+
+/* ───────────────────────────────
+   STICKY COLUMNS (ID + ACTIONS)
+─────────────────────────────── */
+
+/* Sticky left: Checkbox + ID columns */
+.sticky-col-left {
+  position: sticky;
+  left: 0;
+  background: #ffffff;
+  z-index: 10;
+  box-shadow: 3px 0 6px rgba(0, 0, 0, 0.05);
+}
+
+/* Sticky right: ACTIONS COLUMN */
+.grid-table th.sticky-col {
+  position: sticky;
+  right: 0;
+  top: 0;
+  background: #f3f4f6 !important;
+  z-index: 20;
+  box-shadow: -3px 0 6px rgba(0, 0, 0, 0.1);
+}
+
+.grid-table td.sticky-col {
+  position: sticky;
+  right: 0;
+  background: #ffffff !important;
+  z-index: 12;
+  box-shadow: -3px 0 6px rgba(0, 0, 0, 0.08);
+}
+
+.grid-table td.sticky-col button {
+  margin-right: 4px;
+}
