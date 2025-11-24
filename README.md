@@ -9,8 +9,8 @@ This project is a **full-stack Machine Learning platform** built using **FastAPI
 
 ### 📌 1. Upload Any CSV Dataset  
 <img width="800" height="800" alt="image" src="https://github.com/YS-force/dynamic-ml-analytics/blob/b79d9bcd0a22295ac2e85361fb5861552cc4efb3/screenshorts/dashboard.png" />
-- Automatically infers schema  
-- Detects numeric columns  
+- Automatically infers schema
+- Detects numeric columns
 - Determines target and feature columns  
 - Stores everything in MongoDB  
 
