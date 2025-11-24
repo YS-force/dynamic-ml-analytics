@@ -20,7 +20,7 @@ This project is a **full-stack Machine Learning platform** built using **FastAPI
 - Fully editable grid UI  
 
 ### 📌 3. Dynamic Editable Grid  
-- Add new rows  
+- Add new rows and columns  
 - Edit existing rows  
 - Delete rows (single or bulk delete)  
 - Add/delete columns dynamically  
@@ -62,7 +62,7 @@ Helps readers understand which features contributed most.
 
 ### **1. Upload / Create Dataset**
 React → FastAPI  
-FastAPI stores data → MongoDB  
+FastAPI stores data → MongoDB Atlas
 FastAPI computes schema → sent to React  
 
 ---
