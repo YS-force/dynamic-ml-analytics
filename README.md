@@ -20,6 +20,7 @@ This project is a **full-stack Machine Learning platform** built using **FastAPI
 - Fully editable grid UI  
 
 ### 📌 3. Dynamic Editable Grid  
+<img width="1897" height="905" alt="image" src="[https://github.com/user-attachments/assets/35e84866-3f50-4c18-8213-e711003a5ba0](https://github.com/YS-force/dynamic-ml-analytics/blob/41050888b16d06f71e3bc43c71ee56ff6a8b1a85/screenshorts/Dataset.png)" />
 - Add new rows and columns  
 - Edit existing rows  
 - Delete rows (single or bulk delete)  
@@ -44,7 +45,7 @@ Each model returns:
 - Uses trained model  
 - Supports dynamic feature input  
 
-### 📌 6. Data Visualizations (NEW 🔥)
+### 📌 6. Data Visualizations
 Designed to improve model interpretability.
 
 #### 📊 Model Comparison Chart  
