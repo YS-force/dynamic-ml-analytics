@@ -15,7 +15,7 @@ This project is a **full-stack Machine Learning platform** built using **FastAPI
 - Stores everything in MongoDB  
 
 ### 📌 2. Create Table From Scratch  
-<img width="800" height="800" alt="image" src="https://github.com/YS-force/dynamic-ml-analytics/blob/41050888b16d06f71e3bc43c71ee56ff6a8b1a85/screenshorts/Dataset.png" />
+<img width="800" height="800" alt="image" src="https://github.com/YS-force/dynamic-ml-analytics/blob/f9006e50c10a8574883af8febb76a468d11eae58/screenshorts/Create_table.png" />
 - Add custom column names  
 - Starts with an empty dataset  
 - Add rows dynamically  
@@ -50,7 +50,7 @@ Each model returns:
 - Supports dynamic feature input  
 
 ### 📌 6. Data Visualizations
-<img width="800" height="800" alt="image" src="https://github.com/YS-force/dynamic-ml-analytics/blob/b79d9bcd0a22295ac2e85361fb5861552cc4efb3/screenshorts/Visualizations.png" />
+<img width="800" height="800" alt="image" src="https://github.com/YS-force/dynamic-ml-analytics/blob/f9006e50c10a8574883af8febb76a468d11eae58/screenshorts/Visualizations.png" />
 Designed to improve model interpretability.
 
 #### 📊 Model Comparison Chart  
