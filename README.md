@@ -30,7 +30,7 @@ This project is a **full-stack Machine Learning platform** built using **FastAPI
 - Sticky action column UI  
 
 ### 📌 4. Machine Learning – Automatic Training  
-<img width="800" height="800" alt="image" src="https://github.com/YS-force/dynamic-ml-analytics/blob/b79d9bcd0a22295ac2e85361fb5861552cc4efb3/screenshorts/Model_Overview.png" />
+<img width="500" height="800" alt="image" src="https://github.com/YS-force/dynamic-ml-analytics/blob/b79d9bcd0a22295ac2e85361fb5861552cc4efb3/screenshorts/Model_Overview.png" />
 Uses 3 ML models:  
 - **Linear Regression**  
 - **Random Forest Regressor**  
@@ -44,7 +44,7 @@ Each model returns:
 ✔ Feature Importance  
 
 ### 📌 5. Model Prediction  
-<img width="800" height="800" alt="image" src="https://github.com/YS-force/dynamic-ml-analytics/blob/b79d9bcd0a22295ac2e85361fb5861552cc4efb3/screenshorts/Prediction_target.png" />
+<img width="500" height="800" alt="image" src="https://github.com/YS-force/dynamic-ml-analytics/blob/b79d9bcd0a22295ac2e85361fb5861552cc4efb3/screenshorts/Prediction_target.png" />
 - Live prediction UI  
 - Uses trained model  
 - Supports dynamic feature input  
