@@ -8,19 +8,21 @@ This project is a **full-stack Machine Learning platform** built using **FastAPI
 ## ✨ Features Included
 
 ### 📌 1. Upload Any CSV Dataset  
+<img width="800" height="800" alt="image" src="https://github.com/YS-force/dynamic-ml-analytics/blob/b79d9bcd0a22295ac2e85361fb5861552cc4efb3/screenshorts/dashboard.png" />
 - Automatically infers schema  
 - Detects numeric columns  
 - Determines target and feature columns  
 - Stores everything in MongoDB  
 
 ### 📌 2. Create Table From Scratch  
+<img width="800" height="800" alt="image" src="https://github.com/YS-force/dynamic-ml-analytics/blob/41050888b16d06f71e3bc43c71ee56ff6a8b1a85/screenshorts/Dataset.png" />
 - Add custom column names  
 - Starts with an empty dataset  
 - Add rows dynamically  
 - Fully editable grid UI  
 
 ### 📌 3. Dynamic Editable Grid  
-<img width="1897" height="905" alt="image" src="https://github.com/YS-force/dynamic-ml-analytics/blob/41050888b16d06f71e3bc43c71ee56ff6a8b1a85/screenshorts/Dataset.png" />
+<img width="800" height="800" alt="image" src="https://github.com/YS-force/dynamic-ml-analytics/blob/b79d9bcd0a22295ac2e85361fb5861552cc4efb3/screenshorts/Dataset.png" />
 - Add new rows and columns  
 - Edit existing rows  
 - Delete rows (single or bulk delete)  
@@ -28,6 +30,7 @@ This project is a **full-stack Machine Learning platform** built using **FastAPI
 - Sticky action column UI  
 
 ### 📌 4. Machine Learning – Automatic Training  
+<img width="800" height="800" alt="image" src="https://github.com/YS-force/dynamic-ml-analytics/blob/b79d9bcd0a22295ac2e85361fb5861552cc4efb3/screenshorts/Model_Overview.png" />
 Uses 3 ML models:  
 - **Linear Regression**  
 - **Random Forest Regressor**  
@@ -41,11 +44,13 @@ Each model returns:
 ✔ Feature Importance  
 
 ### 📌 5. Model Prediction  
+<img width="800" height="800" alt="image" src="https://github.com/YS-force/dynamic-ml-analytics/blob/b79d9bcd0a22295ac2e85361fb5861552cc4efb3/screenshorts/Prediction_target.png" />
 - Live prediction UI  
 - Uses trained model  
 - Supports dynamic feature input  
 
 ### 📌 6. Data Visualizations
+<img width="800" height="800" alt="image" src="https://github.com/YS-force/dynamic-ml-analytics/blob/b79d9bcd0a22295ac2e85361fb5861552cc4efb3/screenshorts/Visualizations.png" />
 Designed to improve model interpretability.
 
 #### 📊 Model Comparison Chart  
