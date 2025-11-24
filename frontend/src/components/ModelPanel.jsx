@@ -35,7 +35,7 @@ function ModelPanel({ schema, trainResult, prediction, onPredict }) {
   return (
     <div className="model-panel">
 
-      {/* ─────────────── Model Overview ─────────────── */}
+      {/* ===== MODEL OVERVIEW ===== */}
       <div className="card">
         <h2>Model Overview</h2>
 
@@ -45,7 +45,7 @@ function ModelPanel({ schema, trainResult, prediction, onPredict }) {
           <p>Train the models to view performance metrics.</p>
         ) : (
           <>
-            {/* Model Selector */}
+            {/* Model selector */}
             <div className="model-select-row">
               <label>Select model:</label>
               <select
@@ -60,11 +60,12 @@ function ModelPanel({ schema, trainResult, prediction, onPredict }) {
               </select>
             </div>
 
-            {/* Metrics */}
             {currentMetrics && (
               <>
                 <p className="model-status">
-                  <strong>{MODEL_OPTIONS.find(m => m.key === selectedModel)?.label}</strong>
+                  <strong>
+                    {MODEL_OPTIONS.find((m) => m.key === selectedModel)?.label}
+                  </strong>
                   <br />
                   R² Score: <strong>{currentMetrics.r2.toFixed(3)}</strong>
                 </p>
@@ -84,7 +85,7 @@ function ModelPanel({ schema, trainResult, prediction, onPredict }) {
                   </div>
                 </div>
 
-                {/* Feature Importance */}
+                {/* Feature Importance List */}
                 {currentMetrics.feature_importance && (
                   <>
                     <h3>Feature Importance</h3>
@@ -106,9 +107,8 @@ function ModelPanel({ schema, trainResult, prediction, onPredict }) {
         )}
       </div>
 
-      {/* ─────────────── Prediction UI ─────────────── */}
+      {/* ===== PREDICTION PANEL ===== */}
       <div className="card">
-
         <h2>
           Predict Target: <strong>{schema?.target || "Target"}</strong>
         </h2>
@@ -116,29 +116,22 @@ function ModelPanel({ schema, trainResult, prediction, onPredict }) {
         {schema && (
           <div className="target-info-box">
             <p>
-              <strong>{schema.target}</strong> was automatically identified as the
+              <strong>{schema.target}</strong> was automatically detected as the
               <strong> prediction target</strong>.
             </p>
 
             <p className="why-target">
-              This means the ML model will try to estimate the value of{" "}
-              <strong>{schema.target}</strong> using patterns learned from the
-              rest of the dataset.
+              The model will estimate <strong>{schema.target}</strong> based on
+              the patterns found in the input features.
             </p>
 
-            <p className="feature-title">
-              The following columns are used as<strong> input features</strong>:
-            </p>
+            <p className="feature-title">Model uses these columns as features:</p>
 
             <ul className="feature-list">
               {schema.feature_columns.map((c) => (
                 <li key={c}>{c}</li>
               ))}
             </ul>
-
-            <p className="fineprint">
-              (All columns except <strong>{schema.target}</strong> are used as inputs.)
-            </p>
           </div>
         )}
 
@@ -159,7 +152,8 @@ function ModelPanel({ schema, trainResult, prediction, onPredict }) {
             ))}
 
             <button className="btn btn-primary btn-full">
-              Predict using {MODEL_OPTIONS.find(m => m.key === selectedModel)?.label}
+              Predict using{" "}
+              {MODEL_OPTIONS.find((m) => m.key === selectedModel)?.label}
             </button>
           </form>
         )}

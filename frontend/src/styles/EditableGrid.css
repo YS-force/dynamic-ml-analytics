@@ -50,6 +50,8 @@
   border: 1px solid #d1d5db;
   border-radius: 4px;
   font-size: 0.8rem;
+  background: #f6f6f6;
+  color: #374151;
 }
 
 .grid-add-field input:focus {
@@ -81,7 +83,7 @@
    TABLE CONTAINER
 ─────────────────────────────── */
 .grid-table-container {
-  max-height: 680px;
+  max-height: 880px;
   overflow-y: auto;
   border: 1px solid #e5e7eb;
   border-radius: 8px;
@@ -179,11 +181,14 @@
 ─────────────────────────────── */
 
 /* Sticky left: Checkbox + ID columns */
+
+
 .sticky-col-left {
   position: sticky;
   left: 0;
   background: #ffffff;
   z-index: 10;
+  
   box-shadow: 3px 0 6px rgba(0, 0, 0, 0.05);
 }
 
@@ -207,4 +212,74 @@
 
 .grid-table td.sticky-col button {
   margin-right: 4px;
+}
+
+.grid-add-column {
+  display: flex;
+  gap: 0.6rem;
+  margin-bottom: 0.8rem;
+}
+
+.grid-add-column input {
+  padding: 0.35rem 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  width: 200px;
+}
+
+.col-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.col-delete-btn {
+  border: none;
+  background: transparent;
+  font-size: 14px;
+  cursor: pointer;
+  color: #aa0000;
+}
+
+.col-delete-btn:hover {
+  color: red;
+  font-weight: bold;
+}
+
+.add-col-btn {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 3px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.new-col-input {
+  width: 110px;
+  padding: 3px;
+  font-size: 0.8rem;
+}
+
+.actions-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: flex-start;
+}
+
+.add-col-btn {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 2px 6px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.new-col-input {
+  width: 120px;
+  padding: 4px;
+  font-size: 0.8rem;
 }

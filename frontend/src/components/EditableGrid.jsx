@@ -8,13 +8,51 @@ function EditableGrid({
   onCreate,
   onUpdate,
   onDelete,
-  onBulkDelete
+  onBulkDelete,
+  onRefresh
 }) {
   const columns = schema?.columns || [];
+
   const [editingId, setEditingId] = useState(null);
   const [editForm, setEditForm] = useState({});
   const [newRow, setNewRow] = useState({});
   const [selected, setSelected] = useState([]);
+
+  // Add column inline state
+  const [addColumnMode, setAddColumnMode] = useState(false);
+  const [newColumnName, setNewColumnName] = useState("");
+
+  // ───────────────────────────────
+  // Column: Add
+  // ───────────────────────────────
+  const handleAddColumn = async () => {
+    if (!newColumnName.trim()) return;
+
+    await fetch("http://127.0.0.1:8000/add_column", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ column: newColumnName })
+    });
+
+    setNewColumnName("");
+    setAddColumnMode(false);
+    onRefresh();
+  };
+
+  // ───────────────────────────────
+  // Column: Delete
+  // ───────────────────────────────
+  const handleDeleteColumn = async (col) => {
+    if (!window.confirm(`Delete column "${col}"?`)) return;
+
+    await fetch("http://127.0.0.1:8000/delete_column", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ column: col })
+    });
+
+    await onRefresh(); // trigger schema + records reload instantly
+  };
 
   // ───────────────────────────────
   // Selection
@@ -117,29 +155,72 @@ function EditableGrid({
       {/* Table */}
       <div className="grid-table-container">
         <table className="grid-table">
-          <thead>
-            <tr>
-              <th className="sticky-col-left checkbox-col">
-                <input
-                  type="checkbox"
-                  checked={
-                    records.length > 0 &&
-                    selected.length === records.length
-                  }
-                  onChange={toggleSelectAll}
-                />
-              </th>
+<thead>
+  <tr>
+    <th className="sticky-col-left checkbox-col">
+      <input
+        type="checkbox"
+        checked={records.length > 0 && selected.length === records.length}
+        onChange={toggleSelectAll}
+      />
+    </th>
 
-              <th className="sticky-col-left id-col">ID</th>
+    <th className="sticky-col-left id-col">ID</th>
 
-              {columns.map((col) => (
-                <th key={col}>{col}</th>
-              ))}
+    {columns.map((col) => (
+      <th key={col}>
+        <div className="col-header">
+          <span>{col}</span>
 
-              <th className="sticky-col">Actions</th>
-            </tr>
-          </thead>
+          <button
+            className="col-delete-btn"
+            onClick={() => handleDeleteColumn(col)}
+          >
+            ×
+          </button>
+        </div>
+      </th>
+    ))}
 
+    {/* Actions + Add Column button HERE */}
+    <th className="sticky-col actions-header">
+      Actions
+      <button
+        className="add-col-btn"
+        onClick={() => setAddColumnMode(true)}
+        title="Add new column"
+      >
+        +
+      </button>
+    </th>
+
+  </tr>
+
+  {/* row under header for new column input */}
+  {addColumnMode && (
+    <tr>
+      <th></th>
+      <th></th>
+      {columns.map(() => <th></th>)}
+
+      <th className="sticky-col actions-header">
+        <input
+          className="new-col-input"
+          placeholder="Column name"
+          value={newColumnName}
+          onChange={(e) => setNewColumnName(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") handleAddColumn();
+            if (e.key === "Escape") setAddColumnMode(false);
+          }}
+          autoFocus
+        />
+      </th>
+    </tr>
+  )}
+</thead>
+
+          {/* Table Body */}
           <tbody>
             {records.map((rec) => (
               <tr key={rec.id}>
@@ -153,23 +234,20 @@ function EditableGrid({
 
                 <td className="sticky-col-left id-col">{rec.id.slice(-6)}</td>
 
-                {/* Row */}
-                {editingId === rec.id ? (
-                  columns.map((col) => (
-                    <td key={col}>
-                      <input
-                        type="text"
-                        name={col}
-                        value={editForm[col] || ""}
-                        onChange={handleEditChange}
-                      />
-                    </td>
-                  ))
-                ) : (
-                  columns.map((col) => (
-                    <td key={col}>{rec.data[col]}</td>
-                  ))
-                )}
+                {editingId === rec.id
+                  ? columns.map((col) => (
+                      <td key={col}>
+                        <input
+                          type="text"
+                          name={col}
+                          value={editForm[col] || ""}
+                          onChange={handleEditChange}
+                        />
+                      </td>
+                    ))
+                  : columns.map((col) => (
+                      <td key={col}>{rec.data[col]}</td>
+                    ))}
 
                 {/* Sticky Actions */}
                 <td className="sticky-col actions-col">

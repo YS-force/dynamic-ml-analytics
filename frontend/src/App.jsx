@@ -2,6 +2,13 @@
 import React, { useEffect, useState } from "react";
 import EditableGrid from "./components/EditableGrid";
 import ModelPanel from "./components/ModelPanel";
+import CreateTableModal from "./components/CreateTable";
+
+// Charts (shown BELOW grid now)
+import ModelComparisonChart from "./components/charts/ModelComparisonChart";
+import ErrorComparisonChart from "./components/charts/ErrorComparisonChart";
+import SHAPStyleFeatureChart from "./components/charts/SHAPStyleFeatureChart";
+
 import "./App.css";
 
 const API_BASE = "http://127.0.0.1:8000";
@@ -15,21 +22,21 @@ function App() {
   const [trainResult, setTrainResult] = useState(null);
   const [prediction, setPrediction] = useState(null);
   const [file, setFile] = useState(null);
+  const [showCreateTable, setShowCreateTable] = useState(false);
+  const [selectedModel, setSelectedModel] = useState("linear"); // required for SHAP chart
 
-  // ───────────────────────────────────────────────
+  // -------------------------------
   // Helper: Show message
-  // ───────────────────────────────────────────────
+  // -------------------------------
   const showMessage = (text, type = "info") => {
     setMsg(text);
     setMsgType(type);
-    if (text) {
-      setTimeout(() => setMsg(""), 4000);
-    }
+    if (text) setTimeout(() => setMsg(""), 4000);
   };
 
-  // ───────────────────────────────────────────────
+  // -------------------------------
   // Fetch schema
-  // ───────────────────────────────────────────────
+  // -------------------------------
   const fetchSchema = async () => {
     try {
       const res = await fetch(`${API_BASE}/schema`);
@@ -37,49 +44,63 @@ function App() {
         const data = await res.json();
         setSchema(data);
       }
-    } catch (err) {
+    } catch {
       console.log("No schema yet.");
     }
   };
 
-  // ───────────────────────────────────────────────
+  // -------------------------------
   // Fetch records
-  // ───────────────────────────────────────────────
+  // -------------------------------
   const fetchRecords = async () => {
     setLoading(true);
     try {
       const res = await fetch(`${API_BASE}/records`);
       const data = await res.json();
       setRecords(data);
-    } catch (err) {
-      showMessage("Failed to load records.", "error");
+    } catch {
+      showMessage("Failed to load records", "error");
     } finally {
       setLoading(false);
     }
   };
 
-  // ───────────────────────────────────────────────
-  // Run once on load
-  // ───────────────────────────────────────────────
   useEffect(() => {
     fetchSchema();
     fetchRecords();
   }, []);
 
-  // ───────────────────────────────────────────────
-  // Upload dataset
-  // ───────────────────────────────────────────────
+  // -------------------------------
+  // Create empty table
+  // -------------------------------
+  const handleCreateNewTable = async (columns) => {
+    const res = await fetch(`${API_BASE}/create-empty-dataset`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ columns }),
+    });
+
+    const schemaData = await res.json();
+    setSchema(schemaData);
+    setRecords([]);
+
+    setShowCreateTable(false);
+  };
+
+  // -------------------------------
+  // Upload CSV
+  // -------------------------------
   const handleUploadDataset = async (e) => {
     e.preventDefault();
     if (!file) return;
 
-    const formData = new FormData();
-    formData.append("file", file);
+    const fd = new FormData();
+    fd.append("file", file);
 
     try {
       const res = await fetch(`${API_BASE}/upload-dataset`, {
         method: "POST",
-        body: formData,
+        body: fd,
       });
 
       const data = await res.json();
@@ -89,51 +110,44 @@ function App() {
       setTrainResult(null);
       setPrediction(null);
 
-      showMessage("Dataset uploaded successfully.", "success");
+      showMessage("Dataset uploaded.", "success");
       fetchRecords();
     } catch (err) {
       showMessage(err.message, "error");
     }
   };
 
-  // ───────────────────────────────────────────────
-  // Create record (dynamic)
-  // ───────────────────────────────────────────────
+  // -------------------------------
+  // CRUD
+  // -------------------------------
   const handleCreateRecord = async (record) => {
     try {
-      const payload = { data: record };
-
       const res = await fetch(`${API_BASE}/records`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({ data: record }),
       });
 
       const data = await res.json();
-      if (!res.ok) throw new Error(data.detail || "Create failed");
+      if (!res.ok) throw new Error(data.detail);
 
-      showMessage("Record created.", "success");
+      showMessage("Record added.", "success");
       fetchRecords();
     } catch (err) {
       showMessage(err.message, "error");
     }
   };
 
-  // ───────────────────────────────────────────────
-  // Update record (dynamic)
-  // ───────────────────────────────────────────────
   const handleUpdateRecord = async (id, record) => {
     try {
-      const payload = { data: record };
-
       const res = await fetch(`${API_BASE}/records/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({ data: record }),
       });
 
       const data = await res.json();
-      if (!res.ok) throw new Error(data.detail || "Update failed");
+      if (!res.ok) throw new Error(data.detail);
 
       showMessage("Record updated.", "success");
       fetchRecords();
@@ -142,16 +156,14 @@ function App() {
     }
   };
 
-  // ───────────────────────────────────────────────
-  // Delete record
-  // ───────────────────────────────────────────────
   const handleDeleteRecord = async (id) => {
-    if (!window.confirm("Delete this record?")) return;
+    if (!window.confirm("Delete this row?")) return;
 
     try {
       const res = await fetch(`${API_BASE}/records/${id}`, { method: "DELETE" });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.detail || "Delete failed");
+
+      if (!res.ok) throw new Error(data.detail);
 
       showMessage("Record deleted.", "success");
       fetchRecords();
@@ -160,126 +172,107 @@ function App() {
     }
   };
 
-  // ───────────────────────────────────────────────
-  // Bulk delete
-  // ───────────────────────────────────────────────
   const handleBulkDelete = async (ids) => {
-    if (!window.confirm(`Delete ${ids.length} selected records?`)) return;
+    if (!window.confirm("Delete selected rows?")) return;
 
     try {
       for (const id of ids) {
         await fetch(`${API_BASE}/records/${id}`, { method: "DELETE" });
       }
-      showMessage(`Deleted ${ids.length} records.`, "success");
+      showMessage("Rows deleted.", "success");
       fetchRecords();
-    } catch (err) {
-      showMessage("Bulk delete failed.", "error");
+    } catch {
+      showMessage("Bulk delete failed", "error");
     }
   };
 
-  // ───────────────────────────────────────────────
-  // Train ML models (dynamic)
-  // ───────────────────────────────────────────────
+  const refreshAll = async () => {
+    await fetchSchema();
+    await fetchRecords();
+  };
+
+  // -------------------------------
+  // Train ML models
+  // -------------------------------
   const handleTrainModels = async () => {
     try {
       const res = await fetch(`${API_BASE}/train`, { method: "POST" });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.detail || "Training failed");
+
+      if (!res.ok) throw new Error(data.detail);
 
       setTrainResult(data);
-      setSchema(data.schema); // backend sends updated schema
+      setSchema(data.schema);
 
-      showMessage(
-        `Models trained on ${data.samples} samples.`,
-        "success"
-      );
+      showMessage("Models trained.", "success");
     } catch (err) {
       showMessage(err.message, "error");
     }
   };
 
-  // ───────────────────────────────────────────────
-  // Predict using model
-  // ───────────────────────────────────────────────
-  const handlePredict = async (inputFeatures, modelKey) => {
-    try {
-      const payload = {
-        model: modelKey,
-        features: inputFeatures, // dynamic
-      };
+  // -------------------------------
+  // Predict
+  // -------------------------------
+  const handlePredict = async (input, modelKey) => {
+    setSelectedModel(modelKey);
 
+    try {
       const res = await fetch(`${API_BASE}/predict`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({ model: modelKey, features: input }),
       });
 
       const data = await res.json();
-      if (!res.ok) throw new Error(data.detail || "Prediction failed");
+      if (!res.ok) throw new Error(data.detail);
 
       setPrediction(data.prediction_pdmrg);
-      showMessage("Prediction generated.", "success");
+      showMessage("Prediction ready.", "success");
     } catch (err) {
       showMessage(err.message, "error");
     }
   };
 
-  // ───────────────────────────────────────────────
-  // Download CSV
-  // ───────────────────────────────────────────────
-  const handleDownload = () => {
-    window.open(`${API_BASE}/download`, "_blank");
-  };
-
-  // ───────────────────────────────────────────────
+  // -------------------------------
   // UI
-  // ───────────────────────────────────────────────
+  // -------------------------------
   return (
     <div className="app-root">
+
+      {/* HEADER */}
       <header className="app-header">
-        <div>
-          <h1 className="app-title">Dynamic ML Grid</h1>
-          <p className="app-subtitle">
-            Upload any CSV → edit → train ML → predict. Fully dynamic.
-          </p>
-        </div>
+        <h1 className="app-title">Dynamic Grid & ML Prediction</h1>
 
         <div className="header-actions">
 
-          {/* Upload CSV */}
           <form onSubmit={handleUploadDataset} className="upload-form">
-            <input
-              type="file"
-              accept=".csv"
-              onChange={(e) => setFile(e.target.files[0])}
-            />
-            <button className="btn btn-outline btn-sm" type="submit">
-              Upload CSV
-            </button>
+            <input type="file" accept=".csv" onChange={(e) => setFile(e.target.files[0])} />
+            <button className="btn btn-primary">Upload CSV</button>
           </form>
 
-          <button className="btn btn-primary" onClick={handleTrainModels}>
-            Train models
+          <button className="btn btn-primary" onClick={() => setShowCreateTable(true)}>
+            Create Table
           </button>
 
-          <button className="btn btn-outline" onClick={handleDownload}>
+          <button className="btn btn-primary" onClick={handleTrainModels}>
+            Train Models
+          </button>
+
+          <button className="btn btn-primary" onClick={() => window.open(`${API_BASE}/download`)}>
             ⬇ Download CSV
           </button>
+
         </div>
       </header>
 
-      {msg && (
-        <div className={`message message-${msgType}`}>
-          <span>{msg}</span>
-        </div>
-      )}
+      {msg && <div className={`message message-${msgType}`}>{msg}</div>}
 
+      {/* MAIN GRID + SIDEPANEL */}
       <main className="app-layout">
+
+        {/* LEFT SIDE - GRID */}
         <section className="panel panel-main">
-          <h2 className="panel-title">Dataset</h2>
-          <p className="panel-description">
-            Edit records. Columns adapt automatically to uploaded dataset.
-          </p>
+          <h2>Dataset</h2>
 
           {schema ? (
             <EditableGrid
@@ -290,12 +283,14 @@ function App() {
               onUpdate={handleUpdateRecord}
               onDelete={handleDeleteRecord}
               onBulkDelete={handleBulkDelete}
+              onRefresh={refreshAll}
             />
           ) : (
-            <p className="no-schema-text">Upload a CSV to begin.</p>
+            <p>Upload CSV or Create Table to begin.</p>
           )}
         </section>
 
+        {/* RIGHT SIDE - MODEL PANEL */}
         <section className="panel panel-side">
           <ModelPanel
             schema={schema}
@@ -306,9 +301,44 @@ function App() {
         </section>
       </main>
 
-      <footer className="app-footer">
-       
-      </footer>
+      {/* ========================= */}
+      {/* CHARTS BELOW THE GRID     */}
+      {/* ========================= */}
+      {trainResult && (
+        <div className="charts-below-grid">
+  <h2 className="charts-title">Model Performance Visualizations</h2>
+
+  <div className="charts-row">
+    <div className="chart-card">
+      <ModelComparisonChart models={trainResult.models} />
+    </div>
+
+    <div className="chart-card">
+      <ErrorComparisonChart models={trainResult.models} />
+    </div>
+
+    {trainResult.models[selectedModel]?.feature_importance && (
+      <div className="chart-card">
+        <SHAPStyleFeatureChart
+          featureImportance={
+            trainResult.models[selectedModel].feature_importance
+          }
+        />
+      </div>
+    )}
+  </div>
+</div>
+
+      )}
+
+      {/* Modal */}
+      {showCreateTable && (
+        <CreateTableModal
+          onClose={() => setShowCreateTable(false)}
+          onCreate={handleCreateNewTable}
+        />
+      )}
+
     </div>
   );
 }

@@ -38,12 +38,6 @@ body {
   letter-spacing: 0.02em;
 }
 
-.app-subtitle {
-  margin: 0.35rem 0 0;
-  font-size: 0.9rem;
-  color: var(--text-muted);
-}
-
 .header-actions {
   display: flex;
   gap: 0.5rem;
@@ -80,6 +74,7 @@ body {
   color: var(--text-muted);
 }
 
+/* Footer */
 .app-footer {
   margin-top: auto;
   padding: 0.75rem 1.5rem 1.25rem;
@@ -88,8 +83,7 @@ body {
   color: var(--text-muted);
 }
 
-/* Buttons + badges + messages shared styles */
-
+/* Buttons */
 .btn {
   border-radius: 6px;
   border: 1px solid var(--border-subtle);
@@ -103,21 +97,22 @@ body {
 }
 
 .btn:hover {
-  background-color: #f9fafb;
+  background-color: #152e60;
 }
 
 .btn:active {
   transform: translateY(1px);
+}
+.btn btn-outline btn-sm{
+  background-color: #ffffff;
+  border-color: var(--accent-soft);
+  color: var(--accent);
 }
 
 .btn-primary {
   background-color: var(--accent);
   border-color: var(--accent);
   color: #ffffff;
-}
-
-.btn-primary:hover {
-  background-color: #1d4ed8;
 }
 
 .btn-outline {
@@ -141,15 +136,12 @@ body {
   color: var(--danger);
 }
 
-.btn-ghost {
-  border-color: transparent;
-  background-color: transparent;
-}
-
 .btn-full {
   width: 100%;
 }
 
+
+/* Alert messages */
 .message {
   max-width: 1200px;
   margin: 0 auto 0.5rem;
@@ -177,22 +169,7 @@ body {
   color: #b91c1c;
 }
 
-.badge {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.12rem 0.4rem;
-  border-radius: 999px;
-  font-size: 0.7rem;
-  margin-right: 0.4rem;
-}
-
-.badge-success {
-  background-color: #dcfce7;
-  color: #166534;
-}
-
-/* Responsive */
-
+/* RESPONSIVE */
 @media (max-width: 900px) {
   .app-layout {
     grid-template-columns: minmax(0, 1fr);
@@ -206,4 +183,89 @@ body {
   .header-actions {
     margin-top: 0.5rem;
   }
+}
+
+/* =================================================== */
+/* ============== CLEAN CHART DESIGN ================= */
+/* =================================================== */
+
+.charts-below-grid {
+  margin-top: 22px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.charts-title {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+/* 3 charts side-by-side */
+.charts-row {
+  display: flex;
+  gap: 14px;
+  width: 100%;
+  justify-content: space-between;
+  align-items: stretch;
+  flex-wrap: nowrap;
+}
+
+/* Each chart box */
+.chart-card {
+  flex: 1;
+  max-width: 33%;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.10);
+  height: 320px;     /* keeps all equal height */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+/* Fix canvas overflow */
+.chart-card canvas {
+  max-width: 100%;
+  height: 240px !important;
+}
+
+/* Title inside card */
+.chart-card-title {
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+/* Shorten large text labels */
+.chart-card .tick-label {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  font-size: 11px;
+}
+.charts-below-grid {
+  margin-top: 22px;
+  margin-bottom: 40px;   /* ← Add this */
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+
+/* On smaller screens render below in rows */
+@media (max-width: 900px) {
+  .charts-row {
+    flex-wrap: wrap;
+  }
+  .chart-card {
+    max-width: 100%;
+    
+  }
+
 }
